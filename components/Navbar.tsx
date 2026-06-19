@@ -39,8 +39,8 @@ export default function Navbar() {
     if (!startAnimation) return;
     gsap.fromTo(
       navRef.current,
-      { opacity: 0, xPercent: -50, y: -20 },
-      { opacity: 1, xPercent: -50, y: 0, duration: 0.6, ease: "power2.out" }
+      { opacity: 0, y: -20 },
+      { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }
     );
   }, [startAnimation]);
 
@@ -269,9 +269,9 @@ export default function Navbar() {
     <>
       <nav
         ref={navRef}
-        style={{ transform: "translate3d(-50%, -20px, 0px)", opacity: 0 }}
-        className={`fixed top-4 left-1/2 z-50 flex items-center 
-          justify-between w-[90%] max-w-5xl px-6 py-2.5 rounded-full transition-all duration-300
+        style={{ transform: "translate3d(0, -20px, 0)", opacity: 0 }}
+        className={`fixed top-4 left-0 right-0 mx-auto z-50 flex items-center 
+          justify-between w-[90%] max-w-5xl px-6 py-2.5 rounded-full transition-[background-color,border-color,box-shadow] duration-300
           ${mobileMenuOpen
             ? "bg-transparent border border-transparent shadow-none"
             : scrolled

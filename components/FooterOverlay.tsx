@@ -229,8 +229,8 @@ export default function FooterOverlay() {
             initial="initial"
             animate="animate"
             exit="exit"
-            className="fixed bottom-24 left-1/2 -translate-x-1/2 w-[90%] max-w-[280px]
-              md:absolute md:bottom-[calc(100%+16px)] md:right-0 md:left-auto md:translate-x-0 md:w-[280px]
+            className="fixed bottom-24 left-0 right-0 mx-auto w-[90%] max-w-[280px]
+              md:absolute md:bottom-[calc(100%+16px)] md:left-auto md:right-0 md:mx-0 md:w-[280px]
               z-[100] rounded-2xl bg-[#F3F1EB] border border-[#E0DDD6]
               shadow-[0_12px_32px_rgba(0,0,0,0.08)] pointer-events-auto"
           >
