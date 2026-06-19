@@ -11,6 +11,19 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        primary: "#0A0A0A",
+        accent: "#D4A853",
+        muted: "#6B6B6B",
+        borderCustom: "#E0DDD6",
+      },
+      fontFamily: {
+        heading: ["Cabinet Grotesk", "sans-serif"],
+        serif: ["Cabinet Grotesk", "sans-serif"],
+        sans: ["Satoshi", "sans-serif"],
+        mono: ["var(--font-jetbrains-mono)", "monospace"],
+      },
+      borderRadius: {
+        custom: "24px",
       },
     },
   },
