@@ -231,16 +231,16 @@ export default function Loader({ onHeroTrigger, onLoaderComplete }: LoaderProps)
       />
 
       {/* Center content */}
-      <div className="loader-center fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 flex flex-col items-center justify-center pointer-events-none">
+      <div className="loader-center fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 flex flex-col items-center justify-center w-full max-w-full px-6 pointer-events-none">
         
         {/* Animated Wordmark: MANAN */}
         <div 
-          className="loader-logo font-heading font-extrabold text-[#F2F0EB] tracking-[0.02em] select-none leading-none flex"
-          style={{ fontSize: "clamp(60px, 12vw, 160px)" }}
+          className="loader-logo font-heading font-extrabold text-[#F2F0EB] tracking-[0.03em] select-none leading-none flex flex-row flex-nowrap justify-center whitespace-nowrap"
+          style={{ fontSize: "clamp(55px, 16vw, 180px)" }}
         >
           {["M", "A", "N", "A", "N"].map((char, i) => (
             <span key={i} className={`inline-block overflow-hidden relative loader-char-wrap ${startBreathe ? "breathe" : ""}`}>
-              <span className="loader-char inline-block" style={{ transform: "translate3d(0, 110%, 0)", willChange: "transform" }}>
+              <span className="loader-char inline-block" style={{ willChange: "transform" }}>
                 {char}
               </span>
             </span>
@@ -248,17 +248,17 @@ export default function Loader({ onHeroTrigger, onLoaderComplete }: LoaderProps)
         </div>
 
         {/* Below the Wordmark: Tagline, Progress Bar & Enter Button */}
-        <div className="flex flex-col items-center mt-6">
+        <div className="flex flex-col items-center mt-8 md:mt-12">
           {/* Tagline */}
-          <span className="font-mono text-[12px] text-[#6B6B6B] tracking-[0.15em] uppercase text-center select-none mb-2">
+          <span className="font-mono text-[14px] md:text-[18px] text-[#6B6B6B] tracking-[0.2em] uppercase text-center select-none mb-4">
             {tagline}
           </span>
 
           <div className="loader-progress-wrap flex flex-col items-center">
             {/* Sequential Progress Segments (5 blocks) */}
-            <div className="flex gap-2.5 justify-center mt-4">
+            <div className="flex gap-3 justify-center mt-6">
               {[...Array(5)].map((_, i) => (
-                <div key={i} className="w-8 h-[5px] bg-[#F2F0EB]/10 rounded-sm overflow-hidden relative">
+                <div key={i} className="w-10 h-[6px] md:w-16 md:h-[8px] bg-[#F2F0EB]/10 rounded-sm overflow-hidden relative">
                   <div 
                     className={`loader-segment-${i} absolute top-0 left-0 h-full bg-[#D4A853] w-0`}
                   />
@@ -267,7 +267,7 @@ export default function Loader({ onHeroTrigger, onLoaderComplete }: LoaderProps)
             </div>
 
             {/* Synced Percent Counter */}
-            <span className="loader-percent mt-4 font-mono text-[11px] text-[#6B6B6B] text-center tracking-[0.1em] select-none">
+            <span className="loader-percent mt-6 font-mono text-[13px] md:text-[16px] text-[#6B6B6B] text-center tracking-[0.15em] select-none">
               00
             </span>
           </div>
@@ -276,12 +276,12 @@ export default function Loader({ onHeroTrigger, onLoaderComplete }: LoaderProps)
           <div className="loader-enter-wrap hidden flex-col items-center mt-6">
             <button
               onClick={handleEnter}
-              className="px-8 py-3 rounded-full border border-[#F2F0EB]/30 hover:border-[#F2F0EB] text-[#F2F0EB] font-mono text-[13px] tracking-[0.2em] uppercase transition-all duration-300 hover:bg-[#F2F0EB] hover:text-[#0A0A0A] pointer-events-auto"
+              className="px-10 py-4 rounded-full border border-[#F2F0EB]/30 hover:border-[#F2F0EB] text-[#F2F0EB] font-mono text-[15px] md:text-[18px] tracking-[0.25em] uppercase transition-all duration-300 hover:bg-[#F2F0EB] hover:text-[#0A0A0A] pointer-events-auto"
             >
               ENTER
             </button>
             {isLaptop && (
-              <span className="mt-3 font-mono text-[10px] text-[#6B6B6B] tracking-[0.15em] uppercase animate-pulse select-none">
+              <span className="mt-4 font-mono text-[11px] md:text-[13px] text-[#6B6B6B] tracking-[0.2em] uppercase animate-pulse select-none">
                 OR PRESS ANY KEY TO ENTER
               </span>
             )}

@@ -271,7 +271,7 @@ export default function Navbar() {
         ref={navRef}
         style={{ transform: "translate3d(0, -20px, 0)", opacity: 0 }}
         className={`fixed top-4 left-0 right-0 mx-auto z-50 flex items-center 
-          justify-between w-[90%] max-w-5xl px-6 py-2.5 rounded-full transition-[background-color,border-color,box-shadow] duration-300
+          justify-between w-[90%] max-w-5xl px-6 py-4 md:py-2.5 rounded-full transition-[background-color,border-color,box-shadow] duration-300
           ${mobileMenuOpen
             ? "bg-transparent border border-transparent shadow-none"
             : scrolled
@@ -320,7 +320,7 @@ export default function Navbar() {
               soundClick();
             }
           }}
-          className="font-heading font-bold text-[15px] tracking-[0.08em] 
+          className="font-heading font-bold text-[16px] md:text-[15px] tracking-[0.08em] 
             text-[#0A0A0A] uppercase cursor-none hover:text-[#D4A853] transition-colors duration-200 z-50 relative ml-2"
         >
           Manan
@@ -395,11 +395,11 @@ export default function Navbar() {
             setMobileMenuOpen(!mobileMenuOpen);
             soundClick();
           }}
-          className="md:hidden flex flex-col gap-[5px] p-2 cursor-none z-50 relative"
+          className="md:hidden flex flex-col gap-[6px] p-2 cursor-none z-50 relative"
           aria-label="Toggle menu"
         >
-          <span className={`w-5 h-[1.5px] bg-[#0A0A0A] block transition-transform duration-300 origin-center ${mobileMenuOpen ? "rotate-45 translate-y-[6.5px]" : ""}`} />
-          <span className={`w-5 h-[1.5px] bg-[#0A0A0A] block transition-transform duration-300 origin-center ${mobileMenuOpen ? "-rotate-45 -translate-y-[6.5px]" : ""}`} />
+          <span className={`w-6 h-[2px] bg-[#0A0A0A] block transition-transform duration-300 origin-center ${mobileMenuOpen ? "rotate-45 translate-y-[8px]" : ""}`} />
+          <span className={`w-6 h-[2px] bg-[#0A0A0A] block transition-transform duration-300 origin-center ${mobileMenuOpen ? "-rotate-45 -translate-y-[8px]" : ""}`} />
         </button>
       </nav>
 
@@ -407,14 +407,14 @@ export default function Navbar() {
       {mobileMenuOpen && (
         <div className="md:hidden fixed inset-0 bg-[#F3F1EB] z-40 flex flex-col justify-center px-[6vw] py-24 gap-8 overflow-y-auto">
           <ul className="flex flex-col gap-6">
-            {navLinks.map((link) => (
+            {navLinks.map((link, idx) => (
               <li key={link.href}>
                 <Link
                   href={link.href}
                   scroll={false}
-                  onClick={() => {
+                  onClick={(e) => {
                     setMobileMenuOpen(false);
-                    soundClick();
+                    handleLinkClick(e, link.href, idx);
                   }}
                   className="font-heading font-bold text-[32px] text-[#0A0A0A] hover:text-[#D4A853] transition-colors"
                 >

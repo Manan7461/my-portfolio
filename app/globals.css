@@ -80,6 +80,11 @@ body {
   animation: letter-breathe 2.8s ease-in-out infinite;
 }
 
+.loader-char {
+  transform: translateY(110%);
+  clip-path: inset(0 0 100% 0);
+}
+
 .main-content {
   transition: opacity 0.6s ease, visibility 0.6s ease;
 }
