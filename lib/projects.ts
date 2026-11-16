@@ -12,11 +12,66 @@ export interface Project {
   images: string[];
   link: string;
   color: string;
+  accent: string; // vivid brand colour for the case-study page
+  accent2: string; // secondary colour for gradients
+  github?: string; // source repository
+  live?: string; // deployed site
+  video?: string; // looping screen recording for the card
 }
 
 export const projects: Project[] = [
   {
     id: "01",
+    title: "Leaklens – Pre-Deploy Security Checker",
+    category: "Developer Security",
+    year: "2026",
+    shortDesc: "A free, local-first security checker that finds leaked API keys before you deploy, shows whether visitors can actually reach them, and walks you through rotating them for real.",
+    description: "Students, solo developers and people building with AI coding tools leak secrets all the time: a Stripe key in a NEXT_PUBLIC_ variable, a token in git history. Most scanners only say \"a key was found\"; they don't tell you whether the public can reach it, what it can do, or whether you actually fixed it. And uploading your code to a scanner is a privacy risk of its own.",
+    solution: "Built one scanning engine with two front-ends. The website scans a dropped folder or .zip entirely in the browser tab: a strict Content-Security-Policy blocks every upload, and a Proof-of-Privacy panel shows 0 network requests after each scan. Exposure Path Tracing shows the exact chain from .env to the browser and ranks findings by reachability. A Fire Drill checklist then takes each leaked key from replacement through revocation. A CLI, GitHub Action and pre-commit hook add git-history scanning and SARIF output.",
+    deliverables: [
+      "In-browser scanner that works offline as a PWA",
+      "Exposure Path Tracing across Next.js, Vite, SvelteKit, Nuxt, Astro and more",
+      "Fire Drill key-rotation checklist with progress tracking",
+      "Proof-of-Privacy panel (0 network requests per scan)",
+      "CLI, GitHub Action and pre-commit hook with SARIF, HTML and Markdown reports"
+    ],
+    stack: ["TypeScript", "React", "Vite", "Tailwind CSS", "Node.js"],
+    techUsed: ["Frontend (React, Vite, Tailwind CSS)", "Scanning (TypeScript engine in Web Workers)", "Packaging (fflate for .zip reading)", "CLI (Node.js, Commander)", "Testing (Playwright end-to-end)"],
+    images: ["/Project/pr11_1.png", "/Project/pr11_2.png", "/Project/pr11_3.png", "/Project/pr11_4.png"],
+    link: "/leaklens",
+    accent: "#B8F26B",
+    accent2: "#2FB67C",
+    live: "https://leaklensai.vercel.app/",
+    video: "/Project/video/leaklens.webm",
+    color: "#DDE6DE",
+  },
+  {
+    id: "02",
+    title: "PlacePilot – AI Placement Email Organizer",
+    category: "AI Integration",
+    year: "2026",
+    shortDesc: "An AI assistant for Indian campus students that reads placement emails (read-only), extracts every deadline, test and cutoff, and flags hidden service bonds and scam drives.",
+    description: "During campus placements, final-year students get dozens of urgent emails from TPOs and recruiters. Google Form deadlines close within hours, test links get buried in threads, eligibility cutoffs differ by branch, and companies hide 1–2 lakh training bonds or ask for \"registration fees\" in fake drives. Generic to-do apps need everything typed in by hand.",
+    solution: "Connected Gmail with a strict read-only scope, pre-filtered placement emails, and used Claude to extract structured facts, with the untrusted email text isolated to block prompt injection and every result validated with Zod. Everything lands in a Closing-in-48-hours radar, a drag-and-drop Kanban pipeline, a calendar and a skills heatmap. Thread merging updates extended deadlines instead of duplicating them, and Telegram alerts fire 24h and 3h before each deadline.",
+    deliverables: [
+      "Read-only Gmail sync with AI extraction of deadlines, tests and cutoffs",
+      "Service-bond detector and scam / fee shield",
+      "Eligibility matcher against the student's CGPA, backlogs and branch",
+      "List, Kanban board, calendar and skills-heatmap views",
+      "Telegram reminders, .ics calendar export and a no-login demo mode"
+    ],
+    stack: ["Next.js", "Claude API", "Supabase", "Gmail API", "Tailwind CSS"],
+    techUsed: ["Frontend (Next.js, React, Tailwind CSS)", "AI (Anthropic Claude with Zod-validated output)", "Data (Supabase Postgres with row-level security)", "Integrations (Gmail API read-only, Telegram Bot)", "Testing (Vitest)"],
+    images: ["/Project/pr10_1.png", "/Project/pr10_2.png", "/Project/pr10_3.png", "/Project/pr10_4.png"],
+    link: "/placepilot",
+    accent: "#FFD43B",
+    accent2: "#FF8A3D",
+    live: "https://placepilotai.vercel.app/",
+    video: "/Project/video/placepilot.webm",
+    color: "#F1E7C6",
+  },
+  {
+    id: "03",
     title: "HR Real Estate Platform",
     category: "Web Engineering",
     year: "2024",
@@ -34,10 +89,12 @@ export const projects: Project[] = [
     techUsed: ["Frontend (React, Tailwind CSS)", "Backend (Node.js, Express)", "Database (MongoDB)", "Prototyping (Figma)", "Authentication (JWT)"],
     images: ["/Project/pr1_1_1.png", "/Project/pr1_1_2.png", "/Project/pr1_1_3.png", "/Project/pr1_1_4.png"],
     link: "/project1",
+    accent: "#E8B04B",
+    accent2: "#E0563B",
     color: "#E8E4DC",
   },
   {
-    id: "02",
+    id: "04",
     title: "Zomato Clone with AI Integration",
     category: "Interface Design",
     year: "2024",
@@ -54,10 +111,12 @@ export const projects: Project[] = [
     techUsed: ["Frontend (React.js, Tailwind CSS)", "AI (OpenAI/LLM API for contextual prompts)", "Design (Figma for high-fidelity UI components)", "Version Control (Git)"],
     images: ["/Project/pr2_2_1.png", "/Project/pr2_2_2.png", "/Project/pr2_2_3.png", "/Project/pr2_2_4.png"],
     link: "/project2",
+    accent: "#FF4D5E",
+    accent2: "#FFB347",
     color: "#E4E8DC",
   },
   {
-    id: "03",
+    id: "05",
     title: "Jagdamba Sales Agency Smart Desk",
     category: "Growth & Digital Presence",
     year: "2024",
@@ -74,10 +133,12 @@ export const projects: Project[] = [
     techUsed: ["Frontend (React, Custom CSS)", "Data Visualization (Chart.js)", "Backend (Node.js)", "Database (MongoDB)", "AI Logic (Rule-based sales velocity algorithm)"],
     images: ["/Project/pr3_1_1.png", "/Project/pr3_1_2.png", "/Project/pr3_1_3.png", "/Project/pr3_1_4.png"],
     link: "/project3",
+    accent: "#4DA3FF",
+    accent2: "#7AE7C7",
     color: "#DCE4E8",
   },
   {
-    id: "04",
+    id: "06",
     title: "CampusMate.ai",
     category: "AI Integration",
     year: "2024",
@@ -94,10 +155,12 @@ export const projects: Project[] = [
     techUsed: ["Frontend (React.js, CSS)", "AI (LLM/Generative AI API)", "Backend (Node.js)", "Design (Figma)", "State Management (Context API)"],
     images: ["/Project/pr4_1.png", "/Project/pr4_2.png", "/Project/pr4_3.png", "/Project/pr4_4.png"],
     link: "/project4",
+    accent: "#A78BFA",
+    accent2: "#60A5FA",
     color: "#E8DCE4",
   },
   {
-    id: "05",
+    id: "07",
     title: "SkillConnect – Freelancer Marketplace",
     category: "Web Platform",
     year: "2026",
@@ -115,10 +178,12 @@ export const projects: Project[] = [
     techUsed: ["Frontend (React, Tailwind CSS)", "Backend (Node.js, Express)", "Database (MongoDB)", "Authentication (Passport/JWT)", "Design (Figma)"],
     images: ["/Project/pr6_1.png", "/Project/pr6_2.png", "/Project/pr6_3.png", "/Project/pr6_4.png"],
     link: "/project5",
+    accent: "#2DD4BF",
+    accent2: "#A3E635",
     color: "#E8E8DC",
   },
   {
-    id: "06",
+    id: "08",
     title: "Vishat Construction – Brand Identity",
     category: "Visual Identity",
     year: "2023",
@@ -136,10 +201,12 @@ export const projects: Project[] = [
     techUsed: ["Adobe Illustrator (Vector Logo design)", "Adobe Photoshop (Mockups for hoardings/vehicles)", "Figma (Brand guideline presentation)", "Typography (Industrial sans-serif fonts)"],
     images: ["/Project/pr8_1.png", "/Project/pr8_2.png", "/Project/pr8_3.png", "/Project/pr8_4.png"],
     link: "/project6",
+    accent: "#5B8CFF",
+    accent2: "#FF8A3D",
     color: "#DCE8E4",
   },
   {
-    id: "07",
+    id: "09",
     title: "HR Realty – Digital Experience Design",
     category: "Digital Experience Design",
     year: "2023",
@@ -157,6 +224,8 @@ export const projects: Project[] = [
     techUsed: ["Adobe Photoshop (Image editing & poster design)", "Adobe InDesign (Brochure layout)", "Figma (Digital mockups and social previews)", "Canva (Social media template adaptation)"],
     images: ["/Project/pr9_1.jpg", "/Project/pr9_2.jpg", "/Project/pr9_3.jpg", "/Project/pr9_4.jpg"],
     link: "/project7",
+    accent: "#F5B04C",
+    accent2: "#F472B6",
     color: "#E8DCE8",
   },
 ];

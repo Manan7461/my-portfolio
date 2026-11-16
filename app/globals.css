@@ -2,31 +2,86 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── Theme tokens ("Ember" dark palette). Channels let Tailwind apply /opacity. ── */
 :root {
-  --background: #F3F1EB;
-  --foreground: #0A0A0A;
-  --cursor-dot-color: #0A0A0A;
-  --cursor-ring-color: #0A0A0A;
-  --cursor-ring-bg: #0A0A0A;
-  --cursor-text-color: #F3F1EB;
+  --bg: 11 11 12;          /* #0B0B0C  page */
+  --surface: 22 22 25;     /* #161619  raised cards */
+  --fg: 241 239 234;       /* #F1EFEA  text / light blocks */
+  --muted: 146 143 137;    /* #928F89  secondary text */
+  --line: 44 44 48;        /* #2C2C30  hairlines */
+  --accent: 255 107 61;    /* #FF6B3D  signal orange */
+  --on-accent: 11 11 12;   /* text on accent */
+
+  --cursor-dot-color: rgb(var(--fg));
+  --cursor-ring-color: rgb(var(--fg));
+  --cursor-ring-bg: rgb(var(--fg));
+  --cursor-text-color: rgb(var(--bg));
+  color-scheme: dark;
 }
 
-html.loader-active,
+html.cursor-invert,
 .dark-section,
 [data-theme="dark"] {
-  --cursor-dot-color: #F2F0EB;
-  --cursor-ring-color: rgba(242, 240, 235, 0.5);
-  --cursor-ring-bg: #F2F0EB;
-  --cursor-text-color: #0A0A0A;
+  --cursor-dot-color: rgb(var(--bg));
+  --cursor-ring-color: rgb(var(--bg) / 0.5);
+  --cursor-ring-bg: rgb(var(--bg));
+  --cursor-text-color: rgb(var(--fg));
+}
+
+html {
+  overflow-x: clip;
+  background-color: rgb(var(--bg));
 }
 
 body {
-  color: #0A0A0A;
-  background-color: #F3F1EB;
-  font-family: "Satoshi", sans-serif;
-  overflow-x: hidden;
+  color: rgb(var(--fg));
+  background-color: rgb(var(--bg));
+  font-family: var(--font-geist), system-ui, sans-serif;
+  overflow-x: clip;
   margin: 0;
   padding: 0;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Headings: tight, confident tracking */
+.font-heading,
+.font-serif {
+  letter-spacing: -0.035em;
+}
+
+/* Rotating badge text */
+@keyframes spin-slow {
+  to { transform: rotate(360deg); }
+}
+.animate-spin-slow {
+  animation: spin-slow 14s linear infinite;
+}
+
+/* Subtle film grain for depth */
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: -50%;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  animation: grain 8s steps(10) infinite;
+}
+@keyframes grain {
+  0%, 100% { transform: translate(0, 0); }
+  20% { transform: translate(-5%, 3%); }
+  40% { transform: translate(4%, -4%); }
+  60% { transform: translate(-3%, 5%); }
+  80% { transform: translate(5%, -2%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grain::after,
+  .animate-spin-slow,
+  .marquee-track {
+    animation: none !important;
+  }
 }
 
 /* Hide default cursor on desktop/mouse pointer devices only */
@@ -37,8 +92,8 @@ body {
 }
 
 ::selection {
-  background-color: #D4A853;
-  color: #0A0A0A;
+  background-color: rgb(var(--accent));
+  color: rgb(var(--on-accent));
 }
 
 /* Pulse animation for the availability dot */
@@ -96,3 +151,133 @@ html.loader-active .main-content {
 }
 
 
+
+
+/* ── Hero v3: blueprint grid with cursor spotlight ───────────── */
+.hero-grid-base,
+.hero-grid-glow {
+  background-image:
+    linear-gradient(to right, var(--grid-c) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-c) 1px, transparent 1px);
+  background-size: 92px 92px;
+  background-position: center top;
+}
+.hero-grid-base {
+  --grid-c: rgb(var(--fg) / 0.06);
+  -webkit-mask-image: radial-gradient(ellipse 75% 70% at 50% 45%, #000 35%, transparent 80%);
+          mask-image: radial-gradient(ellipse 75% 70% at 50% 45%, #000 35%, transparent 80%);
+}
+.hero-grid-glow {
+  --grid-c: rgb(var(--accent) / 0.6);
+  -webkit-mask-image: radial-gradient(240px circle at var(--mx, -999px) var(--my, -999px), #000, transparent 70%);
+          mask-image: radial-gradient(240px circle at var(--mx, -999px) var(--my, -999px), #000, transparent 70%);
+}
+@keyframes hero-scroll {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(200%); }
+}
+.hero-scroll-line { animation: hero-scroll 1.8s cubic-bezier(0.65, 0, 0.35, 1) infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .hero-scroll-line { animation: none; }
+}
+
+/* Loader curtain grid */
+.ld-grid {
+  background-image:
+    linear-gradient(to right, rgb(var(--bg) / 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(var(--bg) / 0.07) 1px, transparent 1px);
+  background-size: 92px 92px;
+  background-position: center top;
+}
+
+/* Project cards: slow drift so stills feel alive */
+@keyframes work-drift {
+  0%   { transform: scale(1.02) translate3d(0, 0, 0); }
+  100% { transform: scale(1.1) translate3d(-1.5%, -2%, 0); }
+}
+.work-drift { animation: work-drift 16s ease-in-out infinite alternate; }
+@media (prefers-reduced-motion: reduce) { .work-drift { animation: none; } }
+
+/* Project pages: drifting colour field */
+@keyframes pj-drift-a {
+  0%   { transform: translate3d(0, 0, 0) scale(1); }
+  50%  { transform: translate3d(8vw, 6vh, 0) scale(1.15); }
+  100% { transform: translate3d(-4vw, 10vh, 0) scale(0.95); }
+}
+@keyframes pj-drift-b {
+  0%   { transform: translate3d(0, 0, 0) scale(1); }
+  50%  { transform: translate3d(-10vw, 8vh, 0) scale(1.1); }
+  100% { transform: translate3d(4vw, -6vh, 0) scale(1.2); }
+}
+.pj-blob-a { animation: pj-drift-a 18s ease-in-out infinite alternate; }
+.pj-blob-b { animation: pj-drift-b 22s ease-in-out infinite alternate; }
+@media (prefers-reduced-motion: reduce) { .pj-blob-a, .pj-blob-b { animation: none; } }
+
+/* ── "Molten Signal" cursor ─────────────────────────── */
+.mc-dot {
+  background: #fff;
+  mix-blend-mode: difference;
+}
+.mc-disc {
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+.mc-root[data-mode="project"] .mc-disc { opacity: 1; }
+.mc-brackets {
+  opacity: 0;
+  transform-origin: center;
+  transition: opacity 0.25s ease;
+}
+.mc-root[data-mode="idle"] .mc-brackets,
+.mc-root[data-mode="lock"] .mc-brackets { opacity: 1; }
+.mc-b {
+  position: absolute;
+  width: var(--c, 12px);
+  height: var(--c, 12px);
+  border-color: rgb(var(--accent));
+  border-style: solid;
+  filter: drop-shadow(0 0 6px rgb(var(--accent) / 0.6));
+}
+.mc-b.tl { top: 0; left: 0; border-width: 2px 0 0 2px; border-top-left-radius: 4px; }
+.mc-b.tr { top: 0; right: 0; border-width: 2px 2px 0 0; border-top-right-radius: 4px; }
+.mc-b.bl { bottom: 0; left: 0; border-width: 0 0 2px 2px; border-bottom-left-radius: 4px; }
+.mc-b.br { bottom: 0; right: 0; border-width: 0 2px 2px 0; border-bottom-right-radius: 4px; }
+.mc-tag {
+  position: absolute;
+  left: 0;
+  top: -20px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgb(var(--accent));
+  color: rgb(var(--on-accent));
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  font-weight: 600;
+  white-space: nowrap;
+  transform: translateY(4px);
+  opacity: 0;
+  transition: opacity 0.25s ease 0.08s, transform 0.25s ease 0.08s;
+}
+.mc-root[data-mode="lock"] .mc-tag { opacity: 1; transform: translateY(0); }
+.mc-spark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 9999px;
+  background: radial-gradient(circle, #FFE3D1 0%, rgb(var(--accent)) 60%, transparent 100%);
+  box-shadow: 0 0 8px rgb(var(--accent) / 0.8);
+  pointer-events: none;
+}
+.mc-wave {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 9999px;
+  border: 1.5px solid rgb(var(--accent));
+  box-shadow: 0 0 18px rgb(var(--accent) / 0.5);
+  pointer-events: none;
+}
+.mc-dot { transition: opacity 0.2s ease; }
+.mc-root[data-mode="project"] .mc-dot { opacity: 0; }

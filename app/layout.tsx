@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { JetBrains_Mono } from "next/font/google";
+import { JetBrains_Mono, Inter_Tight, Instrument_Serif } from "next/font/google";
+import localFont from "next/font/local";
 import LenisProvider from "@/components/LenisProvider";
 import { LoaderProvider } from "@/components/LoaderContext";
 import Cursor from "@/components/Cursor";
@@ -11,6 +12,31 @@ const jetbrains = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-jetbrains-mono",
   weight: ["400", "500", "700"],
+});
+
+// Display — tight, heavy grotesk for big headlines
+const display = Inter_Tight({
+  subsets: ["latin"],
+  variable: "--font-display",
+  weight: ["400", "500", "600", "700", "800", "900"],
+  display: "swap",
+});
+
+// Editorial italic accent
+const instrument = Instrument_Serif({
+  subsets: ["latin"],
+  variable: "--font-instrument",
+  weight: "400",
+  style: ["normal", "italic"],
+  display: "swap",
+});
+
+// Body — clean neutral sans (bundled locally)
+const geist = localFont({
+  src: "./fonts/GeistVF.woff",
+  variable: "--font-geist",
+  weight: "100 900",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -26,10 +52,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link
-          href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@800,700&f[]=satoshi@400,500,700&display=swap"
-          rel="stylesheet"
-        />
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -39,7 +61,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${jetbrains.variable} antialiased`}
+        className={`${jetbrains.variable} ${display.variable} ${instrument.variable} ${geist.variable} antialiased`}
       >
         <LenisProvider>
           <LoaderProvider>

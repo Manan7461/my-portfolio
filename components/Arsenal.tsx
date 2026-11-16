@@ -96,17 +96,17 @@ function TechIcon({ item }: { item: TechItem }) {
       className="tech-item flex flex-col items-center justify-start p-4 group cursor-none text-center select-none w-full"
     >
       {/* Icon Frame */}
-      <div className="w-12 h-12 flex items-center justify-center relative mb-3">
+      <div className="w-14 h-14 flex items-center justify-center relative mb-3 rounded-2xl bg-[#F1EFEA] shadow-[0_8px_24px_-12px_rgba(0,0,0,0.6)] transition-transform duration-300 group-hover:-translate-y-1 group-hover:shadow-[0_10px_30px_-10px_rgba(255,107,61,0.5)]">
         {!error ? (
           <img
             src={src}
             alt={item.name}
             onError={() => setError(true)}
-            className="w-10 h-10 object-contain transition-transform duration-300 group-hover:scale-110 opacity-85 group-hover:opacity-100"
+            className="w-8 h-8 object-contain transition-transform duration-300 group-hover:scale-110"
             loading="lazy"
           />
         ) : (
-          <div className="w-10 h-10 border border-borderCustom rounded-custom bg-background flex items-center justify-center font-mono text-[11px] font-bold text-muted transition-transform duration-300 group-hover:scale-110">
+          <div className="w-8 h-8 flex items-center justify-center font-mono text-[11px] font-bold text-[#0B0B0C] transition-transform duration-300 group-hover:scale-110">
             {item.name.substring(0, 2).toUpperCase()}
           </div>
         )}

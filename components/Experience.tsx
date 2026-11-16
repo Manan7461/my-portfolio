@@ -148,7 +148,7 @@ export default function Experience() {
             2026
           </span>
           <a
-            href="/Manan_Prajapati_CV.pdf"
+            href="/Manan_Prajapati_Resume.pdf"
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => soundClick()}

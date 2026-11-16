@@ -270,12 +270,12 @@ export default function Navbar() {
       <nav
         ref={navRef}
         style={{ transform: "translate3d(0, -20px, 0)", opacity: 0 }}
-        className={`fixed top-4 left-0 right-0 mx-auto z-50 flex items-center 
-          justify-between w-[90%] max-w-5xl px-6 py-4 md:py-2.5 rounded-full transition-[background-color,border-color,box-shadow] duration-300
+        className={`fixed top-3 left-0 right-0 mx-auto z-50 flex items-center 
+          justify-between w-[calc(100%-24px)] lg:w-[90%] max-w-[980px] pl-5 pr-2.5 py-2 rounded-full transition-[background-color,border-color,box-shadow] duration-300
           ${mobileMenuOpen
             ? "bg-transparent border border-transparent shadow-none"
             : scrolled
-              ? "border border-[#E0DDD6] bg-[#F3F1EB]/80 backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.06)]"
+              ? "border border-borderCustom bg-background/80 backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.06)]"
               : "bg-transparent border border-transparent"
           }`}
       >
@@ -320,14 +320,14 @@ export default function Navbar() {
               soundClick();
             }
           }}
-          className="font-heading font-bold text-[16px] md:text-[15px] tracking-[0.08em] 
-            text-[#0A0A0A] uppercase cursor-none hover:text-[#D4A853] transition-colors duration-200 z-50 relative ml-2"
+          className="font-heading font-bold text-[15px] tracking-[0.08em] 
+            text-primary uppercase cursor-none hover:text-accent transition-colors duration-200 z-50 relative"
         >
           Manan
         </Link>
 
         {/* Nav Links — Desktop Pill Container */}
-        <ul className="hidden md:flex items-center gap-1.5 relative m-0 p-1 rounded-full z-15">
+        <ul className="hidden lg:flex items-center gap-1 relative m-0 p-1 rounded-full z-15">
           {/* Elastic sliding indicator */}
           <span
             ref={indicatorRef}
@@ -345,7 +345,7 @@ export default function Navbar() {
               className="absolute inset-0 block origin-center"
             >
               {/* Active black pill */}
-              <span className="absolute inset-0 bg-[#0A0A0A] rounded-full pointer-events-none" />
+              <span className="absolute inset-0 bg-primary rounded-full pointer-events-none" />
             </span>
           </span>
 
@@ -359,9 +359,9 @@ export default function Navbar() {
                 scroll={false}
                 onMouseEnter={() => soundNavHover()}
                 onClick={(e) => handleLinkClick(e, link.href, idx)}
-                className={`font-heading font-medium text-[13px] tracking-[0.04em]
-                  px-5 py-2.5 rounded-full transition-colors duration-300 cursor-none block relative z-20 ${
-                    activeIndex === idx ? "text-[#F3F1EB]" : "text-[#6B6B6B] hover:text-[#0A0A0A]"
+                className={`font-heading font-medium text-[13px] tracking-[0.03em]
+                  px-4 py-2 rounded-full whitespace-nowrap transition-colors duration-300 cursor-none block relative z-20 ${
+                    activeIndex === idx ? "text-background" : "text-muted hover:text-primary"
                   }`}
               >
                 {link.label}
@@ -371,7 +371,7 @@ export default function Navbar() {
         </ul>
 
         {/* Right Controls Container (Desktop CTA) */}
-        <div className="hidden md:flex items-center gap-6 mr-2">
+        <div className="hidden lg:flex items-center">
           {/* CTA Button — Cabinet Grotesk 500 */}
           <Link
             href="/#contact"
@@ -379,13 +379,13 @@ export default function Navbar() {
             onClick={handleContactClick}
             onMouseEnter={() => soundBtnHover()}
             className="flex items-center gap-2 
-              border border-[#0A0A0A] rounded-full 
-              px-5 py-2 font-heading font-medium text-[13px] tracking-[0.04em] text-[#0A0A0A]
-              hover:bg-[#0A0A0A] hover:text-[#F3F1EB] 
+              border border-primary rounded-full 
+              px-5 py-2 font-heading font-medium text-[13px] tracking-[0.03em] text-primary whitespace-nowrap
+              hover:bg-primary hover:text-background 
               transition-all duration-300 cursor-none"
           >
             Let&apos;s Collide
-            <span className="text-[16px]">→</span>
+            <span className="text-[15px] leading-none">→</span>
           </Link>
         </div>
 
@@ -395,17 +395,17 @@ export default function Navbar() {
             setMobileMenuOpen(!mobileMenuOpen);
             soundClick();
           }}
-          className="md:hidden flex flex-col gap-[6px] p-2 cursor-none z-50 relative"
+          className="lg:hidden flex flex-col gap-[5px] p-2.5 cursor-none z-50 relative"
           aria-label="Toggle menu"
         >
-          <span className={`w-6 h-[2px] bg-[#0A0A0A] block transition-transform duration-300 origin-center ${mobileMenuOpen ? "rotate-45 translate-y-[8px]" : ""}`} />
-          <span className={`w-6 h-[2px] bg-[#0A0A0A] block transition-transform duration-300 origin-center ${mobileMenuOpen ? "-rotate-45 -translate-y-[8px]" : ""}`} />
+          <span className={`w-5 h-[1.5px] bg-primary block transition-transform duration-300 origin-center ${mobileMenuOpen ? "rotate-45 translate-y-[3.5px]" : ""}`} />
+          <span className={`w-5 h-[1.5px] bg-primary block transition-transform duration-300 origin-center ${mobileMenuOpen ? "-rotate-45 -translate-y-[3.5px]" : ""}`} />
         </button>
       </nav>
 
       {/* Mobile Menu Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden fixed inset-0 bg-[#F3F1EB] z-40 flex flex-col justify-center px-[6vw] py-24 gap-8 overflow-y-auto">
+        <div className="lg:hidden fixed inset-0 bg-background z-40 flex flex-col justify-center px-[6vw] py-24 gap-8 overflow-y-auto">
           <ul className="flex flex-col gap-6">
             {navLinks.map((link, idx) => (
               <li key={link.href}>
@@ -416,7 +416,7 @@ export default function Navbar() {
                     setMobileMenuOpen(false);
                     handleLinkClick(e, link.href, idx);
                   }}
-                  className="font-heading font-bold text-[32px] text-[#0A0A0A] hover:text-[#D4A853] transition-colors"
+                  className="font-heading font-bold text-[32px] text-primary hover:text-accent transition-colors"
                 >
                   {link.label}
                 </Link>
@@ -430,7 +430,7 @@ export default function Navbar() {
               setMobileMenuOpen(false);
               handleContactClick(e);
             }}
-            className="mt-8 flex items-center justify-center gap-2 border border-[#0A0A0A] rounded-full py-4 font-heading font-medium text-[15px] text-[#0A0A0A] hover:bg-[#0A0A0A] hover:text-[#F3F1EB] transition-all"
+            className="mt-8 flex items-center justify-center gap-2 border border-primary rounded-full py-4 font-heading font-medium text-[15px] text-primary hover:bg-primary hover:text-background transition-all"
           >
             Let&apos;s Collide →
           </Link>

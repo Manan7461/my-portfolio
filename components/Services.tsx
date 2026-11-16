@@ -1,187 +1,178 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { gsap } from "@/lib/gsap";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { soundCardHover, soundClick, soundSectionEnter } from "@/lib/sound";
+import { services } from "@/lib/services";
 
-interface Service {
-  num: string;
-  title: string;
-  desc: string;
-  href: string;
-}
-
-const servicesData: Service[] = [
-  {
-    num: "01",
-    title: "Web Engineering",
-    desc: "Full-stack website development using modern frameworks. Clean code, fast load times, SEO-ready from day one.",
-    href: "/Web-Engineering"
-  },
-  {
-    num: "02",
-    title: "Interface Design (UI/UX)",
-    desc: "User interfaces that feel intuitive and look exceptional. Research-backed flows with pixel-perfect execution.",
-    href: "/Interface-Design"
-  },
-  {
-    num: "03",
-    title: "Digital Experience Design",
-    desc: "End-to-end web design from wireframe to final visual. Crafted for conversion, built for brand consistency.",
-    href: "/Digital-Experience"
-  },
-  {
-    num: "04",
-    title: "Visual Identity & Graphics",
-    desc: "Brand identity systems, marketing collateral, and graphic design that communicates instantly.",
-    href: "/Visual-Identity"
-  },
-  {
-    num: "05",
-    title: "Growth & Digital Presence",
-    desc: "Strategic social media content, campaign design, and digital brand positioning across platforms.",
-    href: "/Growth-Digital-Presence"
-  },
-  {
-    num: "06",
-    title: "AI Integration & Agents",
-    desc: "Deploying custom AI models, semantic search engines, and agentic reasoning workflows into production apps.",
-    href: "/AI-Integration-Agents"
-  }
-];
+const pad = (n: number) => String(n).padStart(2, "0");
 
 export default function Services() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const cardRefs = useRef<(HTMLAnchorElement | null)[]>([]);
+  const containerRef = useRef<HTMLElement>(null);
+  const [open, setOpen] = useState<number>(0);
 
   useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
-    const cards = cardRefs.current.filter(Boolean) as HTMLAnchorElement[];
-
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const ctx = gsap.context(() => {
-      // GSAP fade up + translation scroll animation
-      gsap.fromTo(
-        cards,
-        { opacity: 0, y: 30 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          stagger: 0.1,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: container,
-            start: "top 75%",
-            toggleActions: "play none none none",
-            onEnter: () => soundSectionEnter(),
+      ScrollTrigger.create({ trigger: containerRef.current, start: "top 70%", once: true, onEnter: () => soundSectionEnter() });
+      if (reduce) return;
+      gsap.utils.toArray<HTMLElement>(".svc-row").forEach((row, i) => {
+        gsap.fromTo(
+          row,
+          { y: 40, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 1.1,
+            delay: i * 0.04,
+            ease: "expo.out",
+            scrollTrigger: { trigger: row, start: "top 92%", once: true },
           }
-        }
-      );
-    }, container);
-
-    // 3D tilt initialization (disabled on mobile/tablet)
-    const isDesktop = window.matchMedia("(min-width: 1024px)").matches;
-    if (isDesktop && cards.length > 0) {
-      import("vanilla-tilt").then((module) => {
-        const VanillaTilt = module.default;
-        cards.forEach((card) => {
-          if (card) {
-            VanillaTilt.init(card, {
-              max: 6,
-              glare: true,
-              "max-glare": 0.06,
-              perspective: 1200,
-            });
-          }
-        });
+        );
       });
-    }
-
-    return () => {
-      ctx.revert();
-      // Cleanup tilt instances
-      cards.forEach((card) => {
-        const tiltCard = card as HTMLAnchorElement & { vanillaTilt?: { destroy: () => void } };
-        if (tiltCard && tiltCard.vanillaTilt) {
-          tiltCard.vanillaTilt.destroy();
-        }
-      });
-    };
+    }, containerRef);
+    return () => ctx.revert();
   }, []);
 
+  const toggle = (i: number) => {
+    soundClick();
+    setOpen((o) => (o === i ? -1 : i));
+  };
+
   return (
-    <section
-      ref={containerRef}
-      id="services"
-      className="w-full bg-background px-[6vw] py-20 md:py-32 flex flex-col items-start relative select-none"
-    >
-      {/* Label and Headings */}
-      <div className="w-full mb-16 flex flex-col items-start gap-2">
-        <span className="font-mono text-[11px] text-accent font-semibold tracking-[0.15em] uppercase">
-          04 · WHAT I BUILD.
-        </span>
-        <h2
-          className="font-serif font-bold text-primary select-text leading-tight"
-          style={{ fontSize: "clamp(40px, 6vw, 80px)" }}
-        >
-          What I build.
-        </h2>
-        <p className="font-sans text-[17px] text-muted mt-2 select-text">
-          From pixel to production. From idea to impact.
-        </p>
-      </div>
-
-      {/* Services Cards Grid */}
-      <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {servicesData.map((service, idx) => (
-          <Link
-            key={idx}
-            href={service.href}
-            scroll={false}
-            ref={(el) => {
-              cardRefs.current[idx] = el;
-            }}
-            onMouseEnter={() => soundCardHover()}
-            onClick={() => soundClick()}
-            className="group card flex flex-col items-start p-8 bg-background border border-borderCustom rounded-custom service-card-transition select-text cursor-none hover:border-primary w-full transform-gpu"
-            style={{ transformStyle: "preserve-3d" }}
+    <section ref={containerRef} id="services" className="w-full bg-background px-5 md:px-[4vw] py-24 md:py-36 relative">
+      <div className="grid lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] gap-12 lg:gap-[6vw]">
+        {/* ── Intro (sticky on desktop) ── */}
+        <div className="lg:sticky lg:top-28 self-start flex flex-col items-start gap-2">
+          <span className="font-mono text-[11px] text-accent font-semibold tracking-[0.15em] uppercase">04 · What I build</span>
+          <h2
+            className="font-heading font-bold text-primary select-text leading-[0.95]"
+            style={{ fontSize: "clamp(44px, 6.4vw, 104px)" }}
           >
-            {/* Top Number */}
-            <span
-              className="font-mono text-[48px] font-bold text-[#E8E5DF] leading-none transition-colors duration-300 group-hover:text-accent select-none"
-              style={{ transform: "translateZ(30px)" }}
+            What I build.
+          </h2>
+          <p className="mt-5 max-w-[40ch] font-sans text-[16px] md:text-[18px] leading-[1.6] text-muted select-text">
+            Six disciplines, one goal:{" "}
+            <em className="font-accent italic text-primary text-[1.15em]">products that perform.</em> Pick a discipline
+            to see what it covers, or open it for the full process.
+          </p>
+          <div className="mt-8 flex items-center gap-6">
+            <a
+              href="#contact"
+              onClick={() => soundClick()}
+              className="group inline-flex items-center gap-3 rounded-full bg-primary text-background pl-5 pr-1.5 py-1.5 font-heading font-medium text-[14px] hover:bg-accent hover:text-onaccent transition-colors duration-300"
             >
-              {service.num}
+              Start a project
+              <span className="grid place-items-center w-9 h-9 rounded-full bg-background text-primary transition-transform duration-300 group-hover:rotate-45">
+                ↗
+              </span>
+            </a>
+            <span className="font-mono text-[11px] tracking-[0.16em] uppercase text-primary/50">
+              ({pad(services.length)}) Disciplines
             </span>
+          </div>
+        </div>
 
-            {/* Service Name */}
-            <h3
-              className="font-serif text-[22px] font-bold text-primary mt-4 leading-tight select-text"
-              style={{ transform: "translateZ(40px)" }}
-            >
-              {service.title}
-            </h3>
+        {/* ── Accordion ── */}
+        <div className="border-t border-primary/15">
+          {services.map((s, i) => {
+            const isOpen = open === i;
+            return (
+              <div key={s.slug} className="svc-row border-b border-primary/15">
+                <button
+                  type="button"
+                  onClick={() => toggle(i)}
+                  onMouseEnter={() => soundCardHover()}
+                  aria-expanded={isOpen}
+                  aria-controls={`svc-panel-${i}`}
+                  className="group w-full grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-4 md:gap-6 py-6 md:py-8 text-left"
+                >
+                  <span
+                    className={`font-heading text-[22px] md:text-[26px] leading-none transition-colors duration-300 ${
+                      isOpen ? "text-accent" : "text-primary/30 group-hover:text-accent"
+                    }`}
+                    aria-hidden
+                  >
+                    ↳
+                  </span>
+                  <span className="min-w-0 flex flex-col md:flex-row md:items-baseline md:justify-between gap-1 md:gap-6">
+                    <span
+                      className="font-heading font-semibold text-primary leading-[1.02] tracking-[-0.04em] transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] md:group-hover:translate-x-2"
+                      style={{ fontSize: "clamp(26px, 3.2vw, 50px)" }}
+                    >
+                      {s.name}
+                    </span>
+                    <span className="shrink-0 font-mono text-[10px] md:text-[11px] tracking-[0.16em] uppercase text-primary/45">
+                      ({s.num}) {s.title}
+                    </span>
+                  </span>
+                  <span
+                    className={`relative grid place-items-center w-10 h-10 md:w-12 md:h-12 rounded-full border transition-colors duration-300 ${
+                      isOpen ? "bg-primary border-primary text-background" : "border-primary/20 text-primary group-hover:border-primary"
+                    }`}
+                    aria-hidden
+                  >
+                    <span className={`absolute w-3.5 h-[1.5px] bg-current transition-transform duration-500`} />
+                    <span
+                      className={`absolute w-3.5 h-[1.5px] bg-current transition-transform duration-500 ${isOpen ? "rotate-0" : "rotate-90"}`}
+                    />
+                  </span>
+                </button>
 
-            {/* Service Description */}
-            <p
-              className="font-sans text-[14px] text-muted leading-[1.7] mt-3 mb-8 select-text"
-              style={{ transform: "translateZ(20px)" }}
-            >
-              {service.desc}
-            </p>
-
-            {/* Arrow Button */}
-            <div
-              className="mt-auto font-sans text-[20px] text-primary transition-transform duration-300 group-hover:translate-x-2 select-none"
-              style={{ transform: "translateZ(50px)" }}
-            >
-              →
-            </div>
-          </Link>
-        ))}
+                {/* Smooth height via grid rows */}
+                <div
+                  id={`svc-panel-${i}`}
+                  role="region"
+                  className={`grid transition-[grid-template-rows] duration-700 ease-[cubic-bezier(0.19,1,0.22,1)] ${
+                    isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+                  }`}
+                >
+                  <div className="overflow-hidden">
+                    <div
+                      className={`pl-[38px] md:pl-[50px] pb-8 md:pb-10 grid md:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] gap-6 md:gap-10 transition-[opacity,transform] duration-700 ${
+                        isOpen ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2"
+                      }`}
+                    >
+                      <div>
+                        <p className="font-accent italic text-[22px] md:text-[26px] leading-tight text-primary/75">{s.tagline}</p>
+                        <p className="mt-3 font-sans text-[15px] md:text-[16px] leading-[1.65] text-muted max-w-[50ch] select-text">
+                          {s.summary}
+                        </p>
+                        <Link
+                          href={`/${s.slug}`}
+                          scroll={false}
+                          onClick={() => soundClick()}
+                          tabIndex={isOpen ? 0 : -1}
+                          className="group mt-6 inline-flex items-center gap-2 font-heading font-medium text-[15px] text-primary"
+                        >
+                          <span className="bg-[linear-gradient(currentColor,currentColor)] bg-[length:100%_1.5px] bg-left-bottom bg-no-repeat group-hover:bg-[length:0%_1.5px] transition-[background-size] duration-500 pb-0.5">
+                            Explore the full process
+                          </span>
+                          <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+                        </Link>
+                      </div>
+                      <ul className="flex flex-col">
+                        {s.highlights.map((h) => (
+                          <li key={h} className="flex items-center gap-3 py-2.5 border-t border-primary/10 first:border-t-0 md:first:border-t">
+                            <span className="w-1.5 h-1.5 rounded-full bg-accent shrink-0" />
+                            <span className="font-sans text-[14px] md:text-[15px] font-medium text-primary">{h}</span>
+                          </li>
+                        ))}
+                        {s.capabilities.slice(0, 3).map((c) => (
+                          <li key={c.title} className="flex items-center gap-3 py-2.5 border-t border-primary/10">
+                            <span className="w-1.5 h-1.5 rounded-full bg-primary/25 shrink-0" />
+                            <span className="font-sans text-[14px] md:text-[15px] text-primary/70">{c.title}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </section>
   );

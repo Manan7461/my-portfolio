@@ -206,13 +206,13 @@ export default function Contact() {
       {[...Array(6)].map((_, i) => (
         <span key={i} className="flex items-center">
           <span className="mx-8">LET&apos;S COLLIDE</span>
-          <span className="text-[#D4A853]">✦</span>
+          <span className="text-accent">✦</span>
           <span className="mx-8">THINK. BUILD. OPTIMIZE.</span>
-          <span className="text-[#D4A853]">✦</span>
+          <span className="text-accent">✦</span>
           <span className="mx-8">AVAILABLE FOR WORK</span>
-          <span className="text-[#D4A853]">✦</span>
+          <span className="text-accent">✦</span>
           <span className="mx-8">GET IN TOUCH</span>
-          <span className="text-[#D4A853]">✦</span>
+          <span className="text-accent">✦</span>
         </span>
       ))}
     </div>
@@ -250,7 +250,7 @@ export default function Contact() {
       <div className="marquee-wrap select-none pointer-events-auto border-y border-borderCustom/20">
         <div 
           ref={marqueeRef}
-          className="marquee-track font-heading font-extrabold uppercase text-[#F3F1EB] text-[28px] sm:text-[36px] lg:text-[48px]"
+          className="marquee-track font-heading font-extrabold uppercase text-background text-[28px] sm:text-[36px] lg:text-[48px]"
         >
           {marqueePhrase}
           {marqueePhrase}
@@ -267,7 +267,7 @@ export default function Contact() {
           className="absolute inset-0 pointer-events-none"
           style={{
             backgroundImage:
-              "radial-gradient(circle, #B8B4AC 1px, transparent 1px)",
+              "radial-gradient(circle, rgb(var(--fg)) 1px, transparent 1px)",
             backgroundSize: "28px 28px",
             opacity: 0.15,
           }}
@@ -288,13 +288,13 @@ export default function Contact() {
             ref={leftColRef}
             className="flex-1 flex flex-col items-start max-w-xl"
           >
-            <h2 className="font-heading font-black leading-[0.95] text-[#0A0A0A] text-[36px] sm:text-[48px] lg:text-[68px] select-text">
+            <h2 className="font-heading font-black leading-[0.95] text-primary text-[36px] sm:text-[48px] lg:text-[68px] select-text">
               Let&apos;s build<br />
               something<br />
               real.
             </h2>
             
-            <p className="mt-6 font-sans text-[16px] leading-[1.7] text-[#6B6B6B] select-text max-w-md">
+            <p className="mt-6 font-sans text-[16px] leading-[1.7] text-muted select-text max-w-md">
               Whether it&apos;s a product, a brand, or an idea that needs a digital form — I&apos;m here for it. Drop your details and I&apos;ll get back within 24 hours.
             </p>
 
@@ -344,13 +344,13 @@ export default function Contact() {
                   rel="noopener noreferrer"
                   onMouseEnter={() => soundBtnHover()}
                   onClick={() => soundClick()}
-                  className="flex items-center gap-2.5 font-sans text-[13px] text-[#6B6B6B] hover:text-[#0A0A0A] transition-colors duration-250 cursor-none relative group pb-1"
+                  className="flex items-center gap-2.5 font-sans text-[13px] text-muted hover:text-primary transition-colors duration-250 cursor-none relative group pb-1"
                 >
-                  <span className="text-[#6B6B6B] group-hover:text-[#0A0A0A] transition-colors duration-250">
+                  <span className="text-muted group-hover:text-primary transition-colors duration-250">
                     {social.icon}
                   </span>
                   <span>{social.handle}</span>
-                  <span className="absolute bottom-0 left-0 w-full h-[1px] bg-[#0A0A0A] scale-x-0 origin-left transition-transform duration-300 ease-out group-hover:scale-x-100" />
+                  <span className="absolute bottom-0 left-0 w-full h-[1px] bg-primary scale-x-0 origin-left transition-transform duration-300 ease-out group-hover:scale-x-100" />
                 </a>
               ))}
             </div>
@@ -361,7 +361,7 @@ export default function Contact() {
                 href="mailto:work.manan5371@gmail.com"
                 onMouseEnter={() => soundBtnHover()}
                 onClick={() => soundClick()}
-                className="font-mono text-[13px] text-[#0A0A0A] hover:text-[#D4A853] transition-colors duration-200 cursor-none pb-0.5 border-b border-transparent hover:border-[#D4A853]"
+                className="font-mono text-[13px] text-primary hover:text-accent transition-colors duration-200 cursor-none pb-0.5 border-b border-transparent hover:border-accent"
               >
                 work.manan5371@gmail.com
               </a>
@@ -394,7 +394,7 @@ export default function Contact() {
                   placeholder="e.g., John Doe"
                   required
                   disabled={status === "sending"}
-                  className="w-full bg-transparent border-b border-[#E0DDD6] focus:border-[#0A0A0A] font-sans text-[16px] text-[#0A0A0A] py-3 placeholder-[#6B6B6B]/50 transition-colors duration-200 outline-none rounded-none shadow-none"
+                  className="w-full bg-transparent border-b border-borderCustom focus:border-primary font-sans text-[16px] text-primary py-3 placeholder-[#6B6B6B]/50 transition-colors duration-200 outline-none rounded-none shadow-none"
                 />
               </div>
 
@@ -410,7 +410,7 @@ export default function Contact() {
                   placeholder="hello@yourcompany.com"
                   required
                   disabled={status === "sending"}
-                  className="w-full bg-transparent border-b border-[#E0DDD6] focus:border-[#0A0A0A] font-sans text-[16px] text-[#0A0A0A] py-3 placeholder-[#6B6B6B]/50 transition-colors duration-200 outline-none rounded-none shadow-none"
+                  className="w-full bg-transparent border-b border-borderCustom focus:border-primary font-sans text-[16px] text-primary py-3 placeholder-[#6B6B6B]/50 transition-colors duration-200 outline-none rounded-none shadow-none"
                 />
               </div>
 
@@ -425,7 +425,7 @@ export default function Contact() {
                   onChange={(e) => setPhone(e.target.value)}
                   placeholder="+91 99999 99999"
                   disabled={status === "sending"}
-                  className="w-full bg-transparent border-b border-[#E0DDD6] focus:border-[#0A0A0A] font-sans text-[16px] text-[#0A0A0A] py-3 placeholder-[#6B6B6B]/50 transition-colors duration-200 outline-none rounded-none shadow-none"
+                  className="w-full bg-transparent border-b border-borderCustom focus:border-primary font-sans text-[16px] text-primary py-3 placeholder-[#6B6B6B]/50 transition-colors duration-200 outline-none rounded-none shadow-none"
                 />
               </div>
 
@@ -444,13 +444,13 @@ export default function Contact() {
                     }
                   }}
                   className={`w-full bg-transparent border-b text-left py-3 flex justify-between items-center font-sans text-[16px] transition-colors duration-200 outline-none cursor-none ${
-                    budgetOpen ? "border-[#0A0A0A]" : "border-[#E0DDD6]"
-                  } ${budget ? "text-[#0A0A0A]" : "text-[#6B6B6B]"}`}
+                    budgetOpen ? "border-primary" : "border-borderCustom"
+                  } ${budget ? "text-primary" : "text-muted"}`}
                 >
                   <span>{budget || "Select project budget"}</span>
                   <svg
-                    className={`w-4 h-4 text-[#6B6B6B] transition-transform duration-300 ${
-                      budgetOpen ? "rotate-180 text-[#0A0A0A]" : ""
+                    className={`w-4 h-4 text-muted transition-transform duration-300 ${
+                      budgetOpen ? "rotate-180 text-primary" : ""
                     }`}
                     viewBox="0 0 24 24"
                     fill="none"
@@ -465,7 +465,7 @@ export default function Contact() {
 
                 {/* Options Panel */}
                 {budgetOpen && (
-                  <div className="absolute top-full left-0 w-full mt-1.5 bg-[#F3F1EB] border border-[#E0DDD6] rounded-lg py-2 z-50 shadow-[0_8px_32px_rgba(0,0,0,0.08)]">
+                  <div className="absolute top-full left-0 w-full mt-1.5 bg-background border border-borderCustom rounded-lg py-2 z-50 shadow-[0_8px_32px_rgba(0,0,0,0.08)]">
                     {budgetOptions.map((option, idx) => (
                       <button
                         key={idx}
@@ -475,11 +475,11 @@ export default function Contact() {
                           setBudgetOpen(false);
                           soundClick();
                         }}
-                        className="w-full text-left px-5 py-3 font-sans text-[14px] text-[#0A0A0A] hover:bg-[#0A0A0A] hover:text-[#F3F1EB] transition-colors duration-150 flex justify-between items-center cursor-none"
+                        className="w-full text-left px-5 py-3 font-sans text-[14px] text-primary hover:bg-primary hover:text-background transition-colors duration-150 flex justify-between items-center cursor-none"
                       >
                         <span>{option}</span>
                         {budget === option && (
-                          <span className="text-[#D4A853] font-bold">✓</span>
+                          <span className="text-accent font-bold">✓</span>
                         )}
                       </button>
                     ))}
@@ -502,13 +502,13 @@ export default function Contact() {
                     }
                   }}
                   className={`w-full bg-transparent border-b text-left py-3 flex justify-between items-center font-sans text-[16px] transition-colors duration-200 outline-none cursor-none ${
-                    serviceOpen ? "border-[#0A0A0A]" : "border-[#E0DDD6]"
-                  } ${service ? "text-[#0A0A0A]" : "text-[#6B6B6B]"}`}
+                    serviceOpen ? "border-primary" : "border-borderCustom"
+                  } ${service ? "text-primary" : "text-muted"}`}
                 >
                   <span>{service || "Select service required"}</span>
                   <svg
-                    className={`w-4 h-4 text-[#6B6B6B] transition-transform duration-300 ${
-                      serviceOpen ? "rotate-180 text-[#0A0A0A]" : ""
+                    className={`w-4 h-4 text-muted transition-transform duration-300 ${
+                      serviceOpen ? "rotate-180 text-primary" : ""
                     }`}
                     viewBox="0 0 24 24"
                     fill="none"
@@ -523,7 +523,7 @@ export default function Contact() {
 
                 {/* Options Panel */}
                 {serviceOpen && (
-                  <div className="absolute top-full left-0 w-full mt-1.5 bg-[#F3F1EB] border border-[#E0DDD6] rounded-lg py-2 z-50 shadow-[0_8px_32px_rgba(0,0,0,0.08)]">
+                  <div className="absolute top-full left-0 w-full mt-1.5 bg-background border border-borderCustom rounded-lg py-2 z-50 shadow-[0_8px_32px_rgba(0,0,0,0.08)]">
                     {serviceOptions.map((option, idx) => (
                       <button
                         key={idx}
@@ -533,11 +533,11 @@ export default function Contact() {
                           setServiceOpen(false);
                           soundClick();
                         }}
-                        className="w-full text-left px-5 py-3 font-sans text-[14px] text-[#0A0A0A] hover:bg-[#0A0A0A] hover:text-[#F3F1EB] transition-colors duration-150 flex justify-between items-center cursor-none"
+                        className="w-full text-left px-5 py-3 font-sans text-[14px] text-primary hover:bg-primary hover:text-background transition-colors duration-150 flex justify-between items-center cursor-none"
                       >
                         <span>{option}</span>
                         {service === option && (
-                          <span className="text-[#D4A853] font-bold">✓</span>
+                          <span className="text-accent font-bold">✓</span>
                         )}
                       </button>
                     ))}
@@ -555,7 +555,7 @@ export default function Contact() {
                   onChange={(e) => setMessage(e.target.value)}
                   placeholder="Describe your project, timeline, and any references..."
                   disabled={status === "sending"}
-                  className="w-full bg-transparent border-b border-[#E0DDD6] focus:border-[#0A0A0A] font-sans text-[16px] text-[#0A0A0A] py-3 placeholder-[#6B6B6B]/50 transition-colors duration-200 outline-none rounded-none shadow-none min-h-[100px] resize-none"
+                  className="w-full bg-transparent border-b border-borderCustom focus:border-primary font-sans text-[16px] text-primary py-3 placeholder-[#6B6B6B]/50 transition-colors duration-200 outline-none rounded-none shadow-none min-h-[100px] resize-none"
                 />
               </div>
 
@@ -566,10 +566,10 @@ export default function Contact() {
                   if (status === "idle") soundBtnHover();
                 }}
                 disabled={status === "sending"}
-                className={`w-full h-14 bg-[#0A0A0A] text-[#F3F1EB] font-heading font-semibold text-[15px] tracking-[0.06em] rounded-md transition-all duration-300 ease-out cursor-none flex items-center justify-center ${
+                className={`w-full h-14 bg-primary text-background font-heading font-semibold text-[15px] tracking-[0.06em] rounded-md transition-all duration-300 ease-out cursor-none flex items-center justify-center ${
                   status === "sending"
                     ? "animate-pulse pointer-events-none opacity-80"
-                    : "hover:bg-[#D4A853] hover:text-[#0A0A0A]"
+                    : "hover:bg-accent hover:text-onaccent"
                 }`}
               >
                 {status === "sending" ? "Sending..." : "Send it →"}
@@ -578,20 +578,20 @@ export default function Contact() {
 
             {/* CONFIRMATION UI */}
             <div
-              className={`transition-all duration-500 delay-200 transform flex flex-col items-center justify-center text-center p-8 border border-[#E0DDD6] rounded-xl bg-[#F3F1EB]/40 backdrop-blur-sm shadow-[0_8px_32px_rgba(0,0,0,0.02)] ${
+              className={`transition-all duration-500 delay-200 transform flex flex-col items-center justify-center text-center p-8 border border-borderCustom rounded-xl bg-background/40 backdrop-blur-sm shadow-[0_8px_32px_rgba(0,0,0,0.02)] ${
                 status === "success"
                   ? "opacity-100 translate-y-0 relative"
                   : "opacity-0 translate-y-5 pointer-events-none absolute w-full"
               }`}
             >
               {/* Checkmark Circle */}
-              <div className="w-16 h-16 border-2 border-[#D4A853] rounded-full flex items-center justify-center mb-6">
+              <div className="w-16 h-16 border-2 border-accent text-accent rounded-full flex items-center justify-center mb-6">
                 <svg
                   width="28"
                   height="28"
                   viewBox="0 0 24 24"
                   fill="none"
-                  stroke="#D4A853"
+                  stroke="currentColor"
                   strokeWidth="3.5"
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -604,15 +604,15 @@ export default function Contact() {
               </div>
 
               {/* Success Messages */}
-              <h3 className="font-heading font-bold text-[28px] text-[#0A0A0A] mb-2">
+              <h3 className="font-heading font-bold text-[28px] text-primary mb-2">
                 Message received.
               </h3>
               
-              <p className="font-sans text-[16px] text-[#6B6B6B] leading-relaxed mb-6 max-w-sm">
-                Thanks <span className="font-semibold text-[#0A0A0A]">{name}</span> — I&apos;ll get back to you within 24 hours.
+              <p className="font-sans text-[16px] text-muted leading-relaxed mb-6 max-w-sm">
+                Thanks <span className="font-semibold text-primary">{name}</span> — I&apos;ll get back to you within 24 hours.
               </p>
               
-              <span className="font-mono text-[11px] text-[#B5B0A6] mb-8 block">
+              <span className="font-mono text-[11px] text-muted mb-8 block">
                 Sent to work.manan5371@gmail.com
               </span>
 
@@ -622,7 +622,7 @@ export default function Contact() {
                   handleReset();
                   soundClick();
                 }}
-                className="font-heading font-semibold text-[14px] text-[#0A0A0A] hover:text-[#D4A853] border-b border-[#0A0A0A] hover:border-[#D4A853] transition-colors duration-250 cursor-none pb-0.5"
+                className="font-heading font-semibold text-[14px] text-primary hover:text-accent border-b border-primary hover:border-accent transition-colors duration-250 cursor-none pb-0.5"
               >
                 Send another →
               </button>
@@ -633,11 +633,11 @@ export default function Contact() {
         </div>
 
         {/* PART 4 — FOOTER */}
-        <div className="w-full flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-t border-[#E0DDD6] pt-8 z-10 relative">
-          <span className="font-mono text-[11px] text-[#6B6B6B] tracking-wider select-text">
+        <div className="w-full flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-t border-borderCustom pt-8 z-10 relative">
+          <span className="font-mono text-[11px] text-muted tracking-wider select-text">
             &copy; {new Date().getFullYear()} Prajapati Manan. All rights reserved.
           </span>
-          <span className="font-mono text-[11px] text-[#6B6B6B] tracking-wider select-text">
+          <span className="font-mono text-[11px] text-muted tracking-wider select-text">
             Designed &amp; built by Manan · AI-Assisted Engineer
           </span>
         </div>

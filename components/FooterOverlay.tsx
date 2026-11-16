@@ -231,7 +231,7 @@ export default function FooterOverlay() {
             exit="exit"
             className="fixed bottom-24 left-0 right-0 mx-auto w-[90%] max-w-[280px]
               md:absolute md:bottom-[calc(100%+16px)] md:left-auto md:right-0 md:mx-0 md:w-[280px]
-              z-[100] rounded-2xl bg-[#F3F1EB] border border-[#E0DDD6]
+              z-[100] rounded-2xl bg-background border border-borderCustom
               shadow-[0_12px_32px_rgba(0,0,0,0.08)] pointer-events-auto"
           >
             {/* Inner Content Wrapper with overflow-hidden to crop the progress bar */}
@@ -255,14 +255,14 @@ export default function FooterOverlay() {
                     setActiveToast(null);
                     soundClick();
                   }}
-                  className="absolute top-2.5 right-2.5 text-[#6B6B6B] hover:text-[#0A0A0A] transition-colors cursor-none text-[11px] px-1 font-sans z-10"
+                  className="absolute top-2.5 right-2.5 text-muted hover:text-primary transition-colors cursor-none text-[11px] px-1 font-sans z-10"
                 >
                   ✕
                 </button>
 
                 {/* Toast Content */}
                 {activeToast.hasLink ? (
-                  <div className="flex flex-col items-start gap-1 font-sans text-[13px] text-[#0A0A0A] leading-relaxed">
+                  <div className="flex flex-col items-start gap-1 font-sans text-[13px] text-primary leading-relaxed">
                     {renderStaggeredText("One hour. Okay, this is genuinely impressive.")}
                     <motion.a
                       href="#contact"
@@ -277,9 +277,9 @@ export default function FooterOverlay() {
                         y: 0,
                         scale: [1, 1.05, 1],
                         textShadow: [
-                          "0 0 0px rgba(212,168,83,0)",
-                          "0 0 8px rgba(212,168,83,0.5)",
-                          "0 0 0px rgba(212,168,83,0)"
+                          "0 0 0px rgba(255,107,61,0)",
+                          "0 0 8px rgba(255,107,61,0.5)",
+                          "0 0 0px rgba(255,107,61,0)"
                         ]
                       }}
                       transition={{
@@ -298,13 +298,13 @@ export default function FooterOverlay() {
                           ease: "easeInOut"
                         }
                       }}
-                      className="font-bold text-[#D4A853] hover:underline cursor-none inline-block mt-1 z-10"
+                      className="font-bold text-accent hover:underline cursor-none inline-block mt-1 z-10"
                     >
                       Let&apos;s talk &nbsp;→
                     </motion.a>
                   </div>
                 ) : (
-                  <div className="font-sans text-[13px] text-[#0A0A0A] leading-relaxed select-text">
+                  <div className="font-sans text-[13px] text-primary leading-relaxed select-text">
                     {renderStaggeredText(activeToast.text)}
                   </div>
                 )}
@@ -314,7 +314,7 @@ export default function FooterOverlay() {
                   initial={{ width: "100%" }}
                   animate={{ width: "0%" }}
                   transition={{ duration: activeToast.duration / 1000, ease: "linear" }}
-                  className="absolute bottom-0 left-0 h-[2px] bg-[#D4A853]"
+                  className="absolute bottom-0 left-0 h-[2px] bg-accent"
                 />
               </motion.div>
             </div>
@@ -334,7 +334,7 @@ export default function FooterOverlay() {
                       initial={{ x: 0, y: 0, scale: 1, opacity: 1 }}
                       animate={{ x, y, scale: 0.3, opacity: 0 }}
                       transition={{ duration: 0.8, ease: "easeOut" }}
-                      className="absolute top-1/2 left-1/2 w-1.5 h-1.5 rounded-full bg-[#D4A853]"
+                      className="absolute top-1/2 left-1/2 w-1.5 h-1.5 rounded-full bg-accent"
                       style={{ marginLeft: "-3px", marginTop: "-3px" }}
                     />
                   );
@@ -347,7 +347,7 @@ export default function FooterOverlay() {
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ delay: 0.1, type: "spring", stiffness: 300, damping: 15 }}
-              className="hidden md:block absolute bottom-[-6px] right-10 w-3 h-3 bg-[#F3F1EB] border-r border-b border-[#E0DDD6] rotate-45 pointer-events-none"
+              className="hidden md:block absolute bottom-[-6px] right-10 w-3 h-3 bg-background border-r border-b border-borderCustom rotate-45 pointer-events-none"
             />
           </motion.div>
         )}
@@ -357,15 +357,15 @@ export default function FooterOverlay() {
       <motion.div
         initial={{
           scale: 1,
-          borderColor: "rgba(224, 221, 214, 0.6)",
-          boxShadow: "0 8px 32px rgba(0,0,0,0.06)",
+          borderColor: "rgba(241, 239, 234, 0.12)",
+          boxShadow: "0 8px 32px rgba(0,0,0,0.45)",
         }}
         animate={{
           scale: isGoldPulse ? 1.12 : 1,
-          borderColor: isGoldPulse ? "#D4A853" : "rgba(224, 221, 214, 0.6)",
+          borderColor: isGoldPulse ? "#FF6B3D" : "rgba(241, 239, 234, 0.12)",
           boxShadow: isGoldPulse 
-            ? "0 0 14px rgba(212, 168, 83, 0.6), 0 8px 32px rgba(0,0,0,0.06)" 
-            : "0 8px 32px rgba(0,0,0,0.06)",
+            ? "0 0 14px rgba(255, 107, 61, 0.6), 0 8px 32px rgba(0,0,0,0.45)" 
+            : "0 8px 32px rgba(0,0,0,0.45)",
         }}
         transition={{
           scale: {
@@ -392,7 +392,7 @@ export default function FooterOverlay() {
             initial={{ scale: 1, opacity: 1 }}
             animate={{ scale: 1.6, opacity: 0 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
-            className="absolute inset-0 rounded-full border-2 border-[#D4A853] pointer-events-none"
+            className="absolute inset-0 rounded-full border-2 border-accent pointer-events-none"
           />
         )}
 
@@ -427,14 +427,14 @@ export default function FooterOverlay() {
             transition-all duration-200 group cursor-none
             hover:scale-[1.08]
             ${muted
-              ? "bg-transparent border-[#E0DDD6]"
-              : "bg-[#0A0A0A] border-[#0A0A0A]"
+              ? "bg-transparent border-borderCustom text-muted"
+              : "bg-primary border-primary text-background"
             }
           `}
         >
           {/* Hover gold ring */}
           <span className="
-            absolute inset-0 rounded-full border border-[#D4A853]
+            absolute inset-0 rounded-full border border-accent
             scale-0 opacity-0
             group-hover:scale-110 group-hover:opacity-60
             transition-all duration-[250ms] pointer-events-none
@@ -443,7 +443,7 @@ export default function FooterOverlay() {
           {/* Sound ON icon */}
           {!muted && (
             <svg width="15" height="15" viewBox="0 0 24 24"
-              fill="none" stroke="#F3F1EB" strokeWidth="2"
+              fill="none" stroke="currentColor" strokeWidth="2"
               strokeLinecap="round" strokeLinejoin="round">
               <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
               <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
@@ -454,7 +454,7 @@ export default function FooterOverlay() {
           {/* Sound OFF icon */}
           {muted && (
             <svg width="15" height="15" viewBox="0 0 24 24"
-              fill="none" stroke="#6B6B6B" strokeWidth="2"
+              fill="none" stroke="currentColor" strokeWidth="2"
               strokeLinecap="round" strokeLinejoin="round">
               <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
               <line x1="23" y1="9" x2="17" y2="15"/>
