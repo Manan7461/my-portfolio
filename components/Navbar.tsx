@@ -271,7 +271,7 @@ export default function Navbar() {
         ref={navRef}
         style={{ transform: "translate3d(0, -20px, 0)", opacity: 0 }}
         className={`fixed top-3 left-0 right-0 mx-auto z-50 flex items-center 
-          justify-between w-[calc(100%-24px)] lg:w-[90%] max-w-[980px] pl-5 pr-2.5 py-2 rounded-full transition-[background-color,border-color,box-shadow] duration-300
+          justify-between w-[calc(100%-24px)] lg:w-[90%] max-w-[980px] pl-6 pr-3 py-3 lg:pl-5 lg:pr-2.5 lg:py-2 rounded-full transition-[background-color,border-color,box-shadow] duration-300
           ${mobileMenuOpen
             ? "bg-transparent border border-transparent shadow-none"
             : scrolled
@@ -320,7 +320,7 @@ export default function Navbar() {
               soundClick();
             }
           }}
-          className="font-heading font-bold text-[15px] tracking-[0.08em] 
+          className="font-heading font-bold text-[18px] lg:text-[15px] tracking-[0.08em] 
             text-primary uppercase cursor-none hover:text-accent transition-colors duration-200 z-50 relative"
         >
           Manan
@@ -395,11 +395,11 @@ export default function Navbar() {
             setMobileMenuOpen(!mobileMenuOpen);
             soundClick();
           }}
-          className="lg:hidden flex flex-col gap-[5px] p-2.5 cursor-none z-50 relative"
+          className="lg:hidden flex flex-col gap-[6px] p-3 cursor-none z-50 relative"
           aria-label="Toggle menu"
         >
-          <span className={`w-5 h-[1.5px] bg-primary block transition-transform duration-300 origin-center ${mobileMenuOpen ? "rotate-45 translate-y-[3.5px]" : ""}`} />
-          <span className={`w-5 h-[1.5px] bg-primary block transition-transform duration-300 origin-center ${mobileMenuOpen ? "-rotate-45 -translate-y-[3.5px]" : ""}`} />
+          <span className={`w-[26px] h-[2px] rounded-full bg-primary block transition-transform duration-300 origin-center ${mobileMenuOpen ? "rotate-45 translate-y-[4px]" : ""}`} />
+          <span className={`w-[26px] h-[2px] rounded-full bg-primary block transition-transform duration-300 origin-center ${mobileMenuOpen ? "-rotate-45 -translate-y-[4px]" : ""}`} />
         </button>
       </nav>
 

@@ -1,8 +1,111 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { gsap } from "@/lib/gsap";
 import { soundBtnHover, soundClick, soundCardHover, soundSectionEnter } from "@/lib/sound";
+
+function useIST() {
+  const [t, setT] = useState("");
+  useEffect(() => {
+    const fmt = () =>
+      new Intl.DateTimeFormat("en-GB", { hour: "2-digit", minute: "2-digit", timeZone: "Asia/Kolkata" }).format(new Date());
+    setT(fmt());
+    const id = setInterval(() => setT(fmt()), 15_000);
+    return () => clearInterval(id);
+  }, []);
+  return t;
+}
+
+/** Live profile card: liquid-chrome film behind a glass ID panel, with a gentle 3D tilt. */
+function ProfileCard() {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const time = useIST();
+
+  // play the film only while the card is on screen
+  useEffect(() => {
+    const v = videoRef.current, card = cardRef.current;
+    if (!v || !card) return;
+    const io = new IntersectionObserver(([e]) => (e.isIntersecting ? v.play().catch(() => {}) : v.pause()), { threshold: 0.15 });
+    io.observe(card);
+    return () => io.disconnect();
+  }, []);
+
+  const onMove = (e: React.MouseEvent) => {
+    const el = cardRef.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width - 0.5, y = (e.clientY - r.top) / r.height - 0.5;
+    gsap.to(el, { rotateY: x * 8, rotateX: -y * 8, duration: 0.6, ease: "power3.out" });
+  };
+  const onLeave = () => gsap.to(cardRef.current, { rotateY: 0, rotateX: 0, duration: 1, ease: "elastic.out(1, 0.5)" });
+
+  const facts = [
+    { k: "Now", v: "Software Engineer @ Cortexloom" },
+    { k: "Based", v: "Kadi, Gujarat, India" },
+    { k: "Focus", v: "AI products & web apps" },
+  ];
+
+  return (
+    <div className="w-full max-w-[420px] [perspective:1200px]">
+      <div
+        ref={cardRef}
+        onMouseMove={onMove}
+        onMouseLeave={onLeave}
+        onMouseEnter={() => soundCardHover()}
+        className="group relative w-full aspect-[3/4] rounded-[28px] overflow-hidden border border-borderCustom bg-[#0B0B0C] [transform-style:preserve-3d] will-change-transform shadow-[0_40px_100px_-40px_rgb(var(--accent)/0.45)]"
+      >
+        <video
+          ref={videoRef}
+          className="absolute inset-0 w-full h-full object-cover"
+          src="/video/orb-portrait.webm"
+          poster="/video/orb-portrait-poster.jpg"
+          muted
+          loop
+          playsInline
+          preload="metadata"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0B0B0C]/55 via-transparent to-[#0B0B0C]/80 pointer-events-none" />
+        {/* sheen */}
+        <span className="pointer-events-none absolute inset-0 bg-[linear-gradient(115deg,transparent_35%,rgba(255,255,255,0.10)_50%,transparent_65%)] -translate-x-full group-hover:translate-x-full transition-transform duration-[1400ms] ease-out" />
+
+        {/* top row */}
+        <div className="absolute top-4 left-4 right-4 flex items-center justify-between font-mono text-[10px] tracking-[0.16em] uppercase text-[#F1EFEA]/85">
+          <span className="flex items-center gap-2 rounded-full bg-[#0B0B0C]/45 backdrop-blur-md border border-white/10 px-2.5 py-1">
+            <span className="animate-dot-pulse inline-flex h-1.5 w-1.5 rounded-full bg-green-500" /> Available
+          </span>
+          <span className="tabular-nums">{time ? `${time} IST` : "IST"}</span>
+        </div>
+
+        {/* glass ID panel */}
+        <div className="absolute inset-x-3 bottom-3 rounded-[20px] bg-[#0B0B0C]/50 backdrop-blur-xl border border-white/10 p-5 text-[#F1EFEA] [transform:translateZ(40px)]">
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <p className="font-heading font-semibold text-[24px] leading-none tracking-[-0.03em]">Prajapati Manan</p>
+              <p className="mt-1.5 font-accent italic text-[17px] text-accent">Full Stack Developer</p>
+            </div>
+            <span className="shrink-0 grid place-items-center w-9 h-9 rounded-full bg-accent text-onaccent font-heading font-bold text-[13px]">PM</span>
+          </div>
+          <dl className="mt-4 flex flex-col">
+            {facts.map((f) => (
+              <div key={f.k} className="grid grid-cols-[64px_1fr] gap-3 py-2 border-t border-white/10">
+                <dt className="font-mono text-[10px] tracking-[0.16em] uppercase text-[#F1EFEA]/50 pt-0.5">{f.k}</dt>
+                <dd className="font-sans text-[13px] text-[#F1EFEA]/90">{f.v}</dd>
+              </div>
+            ))}
+          </dl>
+          <div className="mt-3 flex flex-wrap gap-1.5">
+            {["React", "Next.js", "TypeScript", "Supabase", "Claude AI"].map((t) => (
+              <span key={t} className="font-mono text-[9.5px] tracking-[0.1em] uppercase px-2 py-1 rounded-full border border-white/15 bg-white/5 text-[#F1EFEA]/80">
+                {t}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function About() {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -76,18 +179,11 @@ export default function About() {
 
       {/* Two-Column Layout */}
       <div className="w-full grid grid-cols-1 lg:grid-cols-[420px_1fr] gap-12 lg:gap-16 items-start">
-        {/* Left Column - Image */}
+        {/* Left Column - Profile card (replaces the photo) */}
         <div ref={leftColRef} className="opacity-0 flex flex-col items-start w-full">
-          <div className="w-full aspect-[3/4] max-w-[420px] border border-primary rounded-custom overflow-hidden rotate-[-1.5deg] hover:rotate-0 transition-transform duration-500 ease-out bg-neutral-200">
-            {/* Portrait Image */}
-            <img
-              src="/manan_portrait.png"
-              alt="Prajapati Manan Portrait"
-              className="w-full h-full object-cover object-center grayscale hover:grayscale-0 transition-all duration-500"
-            />
-          </div>
+          <ProfileCard />
           <p className="mt-4 font-mono text-[11px] text-muted tracking-wider uppercase">
-            Prajapati Manan · AI-Assisted Engineer
+            Prajapati Manan · Full Stack Developer
           </p>
         </div>
 

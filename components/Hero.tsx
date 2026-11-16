@@ -98,11 +98,11 @@ export default function Hero() {
   const { startAnimation } = useLoader();
   const lenis = useLenis();
   const time = useLocalTime();
-  // Laptop/desktop: ember-silk film. Phones: liquid-chrome orb film.
-  const [film, setFilm] = useState<"aurora" | "orb" | null>(null);
+  // Laptop/desktop: ember-silk film. Phones: liquid-chrome orb film rendered in portrait (1080x1920) so it stays sharp.
+  const [film, setFilm] = useState<"aurora" | "orb-portrait" | null>(null);
   useEffect(() => {
     const mq = window.matchMedia("(min-width: 768px)");
-    const pick = () => setFilm(mq.matches ? "aurora" : "orb");
+    const pick = () => setFilm(mq.matches ? "aurora" : "orb-portrait");
     pick();
     mq.addEventListener("change", pick);
     return () => mq.removeEventListener("change", pick);

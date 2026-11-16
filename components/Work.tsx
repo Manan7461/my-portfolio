@@ -75,6 +75,167 @@ function CardMedia({ p, hovered }: { p: Project; hovered: boolean }) {
   );
 }
 
+/** Phones & tablets: a tall story-style card, media edge to edge, copy on a dark fade. */
+function StoryCard({ p, i, total }: { p: Project; i: number; total: number }) {
+  const [name, tagline] = p.title.includes(" – ") ? p.title.split(" – ") : [p.title, ""];
+  const grad = `linear-gradient(100deg, ${p.accent}, ${p.accent2})`;
+  return (
+    <div className="relative shrink-0 snap-center w-[84vw] max-w-[440px]">
+      <Link
+        href={p.link}
+        scroll={false}
+        onClick={() => soundClick()}
+        className="project-card relative block aspect-[3/4.2] rounded-[26px] overflow-hidden bg-[#111113] border border-white/[0.06]"
+        style={{ boxShadow: `0 30px 60px -32px ${p.accent}99` }}
+      >
+        {/* media fills the top two-thirds, then fades into a clean base for the copy */}
+        <div className="absolute inset-x-0 top-0 h-[66%] overflow-hidden" style={{ background: p.color }}>
+          <CardMedia p={p} hovered={false} />
+        </div>
+        <div className="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-[#0B0B0C]/70 to-transparent pointer-events-none" />
+        <div className="absolute inset-x-0 top-[38%] h-[29%] bg-gradient-to-b from-transparent to-[#111113] pointer-events-none" />
+        <div
+          className="absolute inset-x-0 bottom-0 h-[40%] pointer-events-none opacity-60"
+          style={{ background: `radial-gradient(80% 60% at 20% 100%, ${p.accent}26, transparent 70%)` }}
+        />
+
+        {/* story progress */}
+        <div className="absolute top-3 inset-x-3 flex gap-1" aria-hidden>
+          {Array.from({ length: total }).map((_, k) => (
+            <span key={k} className="h-[3px] flex-1 rounded-full" style={{ background: k <= i ? "#F1EFEA" : "rgba(241,239,234,0.22)" }} />
+          ))}
+        </div>
+        <span className="absolute top-7 left-3.5 inline-flex items-center gap-1.5 font-mono text-[10px] tracking-[0.16em] text-[#F1EFEA]/85">
+          {p.video && <span className="w-1.5 h-1.5 rounded-full bg-[#ef4444] animate-pulse" />}
+          {p.id} / {pad(total)}
+        </span>
+
+        {/* copy */}
+        <div className="absolute inset-x-0 bottom-0 p-5">
+          <span className="flex items-center gap-2 font-mono text-[10px] tracking-[0.16em] uppercase" style={{ color: p.accent }}>
+            <span className="w-1.5 h-1.5 rounded-full" style={{ background: p.accent, boxShadow: `0 0 10px ${p.accent}` }} />
+            {p.category}
+          </span>
+          <h3 className="mt-2 font-heading font-semibold text-[#F1EFEA] tracking-[-0.035em] leading-[1.02] text-[30px]">{name}</h3>
+          {tagline && (
+            <p className="mt-1 font-accent italic text-[18px] leading-tight bg-clip-text text-transparent" style={{ backgroundImage: grad }}>
+              {tagline}
+            </p>
+          )}
+          <div className="mt-4 flex items-center justify-between gap-3">
+            <span className="font-mono text-[10px] tracking-[0.12em] uppercase text-[#F1EFEA]/55 truncate">
+              {p.year} · {p.stack.slice(0, 2).join(" · ")}
+            </span>
+            <span className="shrink-0 grid place-items-center w-11 h-11 rounded-full text-[#0B0B0C] text-[17px]" style={{ background: grad }}>
+              ↗
+            </span>
+          </div>
+        </div>
+      </Link>
+      {p.live && (
+        <a
+          href={p.live}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={() => soundClick()}
+          className="absolute top-6 right-3 z-10 rounded-full px-3 py-1.5 font-mono text-[10px] tracking-[0.14em] uppercase font-semibold text-[#0B0B0C]"
+          style={{ background: grad }}
+        >
+          Live ↗
+        </a>
+      )}
+    </div>
+  );
+}
+
+/** Phones & tablets: horizontal swipe carousel with snap, counter, dots and arrows. */
+function MobileCarousel({ total }: { total: number }) {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [active, setActive] = useState(0);
+  const count = projects.length + 1; // + closing CTA slide
+  const step = () => {
+    const first = trackRef.current?.children[0] as HTMLElement | undefined;
+    return first ? first.offsetWidth + 12 : 1;
+  };
+  const onScroll = () => {
+    const t = trackRef.current;
+    if (t) setActive(Math.min(count - 1, Math.max(0, Math.round(t.scrollLeft / step()))));
+  };
+  const go = (to: number) => {
+    const t = trackRef.current;
+    if (!t) return;
+    soundClick();
+    t.scrollTo({ left: Math.min(count - 1, Math.max(0, to)) * step(), behavior: "smooth" });
+  };
+  const accent = active < projects.length ? projects[active].accent : "rgb(var(--accent))";
+
+  return (
+    <div className="lg:hidden -mx-5 md:-mx-[4vw]">
+      <div
+        ref={trackRef}
+        onScroll={onScroll}
+        data-lenis-prevent
+        className="flex gap-3 overflow-x-auto snap-x snap-mandatory overscroll-x-contain px-5 md:px-[4vw] pb-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      >
+        {projects.map((p, i) => (
+          <StoryCard key={p.id} p={p} i={i} total={total} />
+        ))}
+        <a
+          href="#contact"
+          onClick={() => soundClick()}
+          className="relative shrink-0 snap-center w-[84vw] max-w-[440px] aspect-[3/4.2] rounded-[26px] overflow-hidden bg-surface border border-borderCustom p-6 flex flex-col justify-between"
+        >
+          <span className="font-mono text-[10px] tracking-[0.16em] uppercase text-muted">({pad(total + 1)}) — Next</span>
+          <p className="font-heading font-semibold tracking-[-0.04em] leading-[0.95] text-[44px] text-primary">
+            Your project
+            <br />
+            <em className="font-accent italic font-normal text-accent">could be here.</em>
+          </p>
+          <span className="relative inline-flex items-center justify-between rounded-full bg-accent text-onaccent pl-5 pr-1.5 py-1.5 font-heading font-medium text-[15px]">
+            Start a conversation
+            <span className="grid place-items-center w-10 h-10 rounded-full bg-[#0B0B0C] text-[#F1EFEA]">↗</span>
+          </span>
+          <span
+            aria-hidden
+            className="pointer-events-none absolute -bottom-1/3 -right-1/3 w-[90%] aspect-square rounded-full opacity-25"
+            style={{ background: "radial-gradient(circle, rgb(var(--accent)) 0%, transparent 60%)" }}
+          />
+        </a>
+      </div>
+
+      {/* controls */}
+      <div className="mt-5 px-5 md:px-[4vw] flex items-center justify-between gap-4">
+        <span className="font-mono text-[12px] tracking-[0.16em] text-primary tabular-nums">
+          {pad(active + 1)} <span className="text-muted">/ {pad(count)}</span>
+        </span>
+        <div className="flex items-center gap-1.5" aria-hidden>
+          {Array.from({ length: count }).map((_, k) => (
+            <span
+              key={k}
+              className="h-1.5 rounded-full transition-all duration-500"
+              style={{ width: k === active ? 22 : 6, background: k === active ? accent : "rgb(var(--fg) / 0.2)" }}
+            />
+          ))}
+        </div>
+        <div className="flex items-center gap-2">
+          {[-1, 1].map((d) => (
+            <button
+              key={d}
+              type="button"
+              aria-label={d < 0 ? "Previous project" : "Next project"}
+              onClick={() => go(active + d)}
+              disabled={d < 0 ? active === 0 : active === count - 1}
+              className="grid place-items-center w-11 h-11 rounded-full border border-borderCustom text-primary disabled:opacity-30 active:scale-95 transition-transform"
+            >
+              {d < 0 ? "←" : "→"}
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function WorkCard({ p, total }: { p: Project; total: number }) {
   const [hovered, setHovered] = useState(false);
   const cleanTitle = p.title.split(" – ")[0];
@@ -82,7 +243,7 @@ function WorkCard({ p, total }: { p: Project; total: number }) {
 
   return (
     <div className="work-slot lg:sticky lg:h-[calc(100svh-84px)] flex items-center" style={{ top: NAV_OFFSET }}>
-      <div className="relative w-full grid lg:grid-cols-[minmax(130px,1fr)_minmax(0,1040px)_minmax(130px,1fr)] items-center gap-5 lg:gap-8">
+      <div className="relative w-full hidden lg:grid lg:grid-cols-[minmax(130px,1fr)_minmax(0,1040px)_minmax(130px,1fr)] items-center gap-5 lg:gap-8">
         {/* Left meta (desktop) */}
         <div className="work-meta hidden lg:flex flex-col gap-1 justify-self-start">
           <span className="font-mono text-[10px] tracking-[0.18em] uppercase text-muted">Year</span>
@@ -91,13 +252,6 @@ function WorkCard({ p, total }: { p: Project; total: number }) {
           <span className="font-heading font-medium text-[17px] text-primary tabular-nums">
             {p.id} / {pad(total)}
           </span>
-        </div>
-
-        {/* Mobile meta row */}
-        <div className="lg:hidden flex items-center justify-between font-mono text-[10px] tracking-[0.16em] uppercase text-muted">
-          <span className="text-primary">({p.id})</span>
-          <span>{p.category}</span>
-          <span>{p.year}</span>
         </div>
 
         {/* Frame */}
@@ -158,12 +312,6 @@ function WorkCard({ p, total }: { p: Project; total: number }) {
             {/* darkens as the next card covers it */}
             <span aria-hidden className="work-shade absolute inset-0 bg-[#0A0A0A] opacity-0 pointer-events-none" />
           </Link>
-
-          {/* Mobile copy sits below the frame so the media stays clean */}
-          <div className="md:hidden mt-4">
-            <p className="font-heading font-semibold tracking-[-0.03em] leading-[1.05] text-[24px] text-primary">{subtitle}</p>
-            <p className="mt-2 font-sans text-[14px] leading-[1.55] text-muted line-clamp-3">{p.shortDesc}</p>
-          </div>
 
           {/* Live link: sibling of the card link (anchors can't nest) */}
           {p.live && (
@@ -243,8 +391,11 @@ export default function Work() {
         <span className="font-mono text-[11px] tracking-[0.16em] uppercase text-primary/50">({pad(total)}) Case studies</span>
       </div>
 
-      {/* Stack */}
-      <div className="flex flex-col gap-14 lg:gap-0">
+      {/* Phones & tablets: swipe carousel */}
+      <MobileCarousel total={total} />
+
+      {/* Desktop: stacking cards */}
+      <div className="hidden lg:flex flex-col">
         {projects.map((p) => (
           <WorkCard key={p.id} p={p} total={total} />
         ))}
